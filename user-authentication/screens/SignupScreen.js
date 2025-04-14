@@ -4,7 +4,7 @@ import AuthContent from "../components/Auth/AuthContent";
 import LoadingOverlay from "../components/ui/LoadingOverlay";
 import { createUser } from "../utils/auth";
 
-function LoginScreen() {
+function SignupScreen() {
   const [isAuthenticating, setIsAuthenticating] = useState(false);
   async function signup({ email, password }) {
     try {
@@ -27,4 +27,4 @@ function LoginScreen() {
   return <AuthContent onAuthenticate={signup} />;
 }
 
-export default LoginScreen;
+export default SignupScreen;
