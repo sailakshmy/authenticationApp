@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Alert } from "react-native";
 import AuthContent from "../components/Auth/AuthContent";
 import LoadingOverlay from "../components/ui/LoadingOverlay";
 import { loginUser } from "../utils/auth";
@@ -13,7 +14,7 @@ function LoginScreen() {
     } catch (error) {
       Alert.alert(
         "Authentication failed",
-        "Could not authenticate user. Please check your input."
+        "Could not authenticate user. Please check your credentials or try again later!."
       );
       setIsAuthenticating(false);
       return;
