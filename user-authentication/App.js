@@ -2,7 +2,9 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { StatusBar } from "expo-status-bar";
 
-import { useContext } from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import AppLoading from "expo-app-loading";
+import { useContext, useEffect, useState } from "react";
 import IconButton from "./components/ui/IconButton";
 import { Colors } from "./constants/styles";
 import LoginScreen from "./screens/LoginScreen";
@@ -66,12 +68,33 @@ function Navigation() {
   );
 }
 
+function Root() {
+  const authContext = useContext(AuthContext);
+  const [isTryingToLogin, setIsTryingToLogin] = useState(true);
+  useEffect(() => {
+    const fetchToken = async () => {
+      const storedToken = await AsyncStorage.getItem("token");
+      if (storedToken) {
+        authContext.authenticate(storedToken);
+      }
+      setIsTryingToLogin(false);
+    };
+    fetchToken();
+  }, []);
+
+  if (isTryingToLogin) {
+    return <AppLoading message="Loading..." />;
+  }
+
+  return <Navigation />;
+}
+
 export default function App() {
   return (
     <>
       <StatusBar style="light" />
       <AuthContextProvider>
-        <Navigation />
+        <Root />
       </AuthContextProvider>
     </>
   );
